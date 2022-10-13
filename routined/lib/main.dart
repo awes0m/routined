@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:routined/data/weather_repository.dart';
 
 import 'bottom_bar.dart';
 
@@ -13,22 +15,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const BottomBar(),
-    );
-  }
-}
-
-class MyChangeNotifier extends ChangeNotifier {
-  MyChangeNotifier() : super();
-  int _count = 0;
-  int get count => _count;
-  void increment() {
-    _count++;
-    notifyListeners();
+        debugShowCheckedModeBanner: false,
+        title: 'Routined',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: const BottomBar());
   }
 }
