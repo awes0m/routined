@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:routined/data/weather_repository.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import 'bottom_bar.dart';
+import 'data/models/tasks.dart';
 
-void main() {
+Future<void> main() async {
+  // init hive
+  await Hive.initFlutter();
+  //register adapter
+  Hive.registerAdapter(TaskAdapter());
+  // open a Box
+  await Hive.openBox('myBox');
+
   runApp(const MyApp());
 }
 

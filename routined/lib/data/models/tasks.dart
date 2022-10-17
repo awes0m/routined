@@ -1,16 +1,25 @@
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
+part 'tasks.g.dart';
 
+
+@HiveType(typeId: 1)
 class Task {
   int? id;
+
+  @HiveField(0)
   String title;
-  String description;
+
+  @HiveField(1)
   bool isDone;
-  DateTime date;
+
+  @HiveField(2)
+  String description;
   Task({
     this.id,
     required this.title,
     this.description = '',
     this.isDone = false,
-    required this.date,
   });
 
   Map<String, dynamic> toJson() {
@@ -18,7 +27,6 @@ class Task {
       'title': title,
       'description': description,
       'isDone': isDone,
-      'date': date.toIso8601String(),
     };
   }
 
@@ -28,7 +36,6 @@ class Task {
       title: json['title'] as String,
       description: json['description'] as String,
       isDone: json['isDone'] as bool,
-      date: DateTime.parse(json['date'] as String),
     );
   }
 
@@ -44,7 +51,8 @@ class Task {
       title: title ?? this.title,
       description: description ?? this.description,
       isDone: isDone ?? this.isDone,
-      date: date ?? this.date,
     );
   }
 }
+
+

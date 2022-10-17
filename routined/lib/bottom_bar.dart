@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'screens/alarm_screen.dart';
-import 'screens/notepad.dart';
-import 'screens/to_do_screen.dart';
-import 'screens/weather_search_page.dart';
+import 'presentation/screens/alarm_screen.dart';
+import 'presentation/screens/notepad.dart';
+import 'presentation/screens/to_do_screen.dart';
+import 'presentation/screens/weather_search_page.dart';
 
 class BottomBar extends StatefulWidget {
   const BottomBar({Key? key}) : super(key: key);

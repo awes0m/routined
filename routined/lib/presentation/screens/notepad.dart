@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:routined/core/widgets/custom_appbar.dart';
 
-class AlarmScreen extends StatelessWidget {
-  const AlarmScreen({Key? key}) : super(key: key);
+class NotesScreen extends StatelessWidget {
+  const NotesScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar('Alarms'),
+      appBar: customAppBar(titleText: 'Notes'),
       body: const Center(
-        child: Text('Alarms'),
+        child: Text('Notes'),
       ),
-      backgroundColor: Colors.orangeAccent,
+      backgroundColor: Colors.white,
     );
   }
 }
