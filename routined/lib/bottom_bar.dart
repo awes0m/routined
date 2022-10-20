@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'presentation/screens/alarm_screen.dart';
 import 'presentation/screens/notepad.dart';
 import 'presentation/screens/to_do_screen.dart';
-import 'presentation/screens/weather_search_page.dart';
+import 'presentation/screens/habbit_tracker_page.dart';
 
 class BottomBar extends StatefulWidget {
   const BottomBar({Key? key}) : super(key: key);
@@ -15,7 +15,7 @@ class BottomBar extends StatefulWidget {
 class _BottomBarState extends State<BottomBar> {
   int _selectedIndex = 0;
   List<Widget> screens = [
-    const WeatherSearchPage(),
+    const HabbitTrackerPage(),
     const ToDoScreen(),
     const NotesScreen(),
     const AlarmScreen(),
@@ -41,7 +41,7 @@ class _BottomBarState extends State<BottomBar> {
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.sunny),
-              label: 'Weather',
+              label: 'Habbits',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.track_changes),
