@@ -35,6 +35,20 @@ class _TodoTileState extends State<TodoTile> {
     });
   }
 
+  /// Gets the color of the CheckBox based on the current state of Task completion or mouse loaction
+  Color getColor(Set<MaterialState> states) {
+    const Set<MaterialState> interactiveStates = <MaterialState>{
+      MaterialState.pressed,
+      MaterialState.hovered,
+      MaterialState.focused,
+      MaterialState.selected
+    };
+    if (states.any(interactiveStates.contains)) {
+      return Colors.green;
+    }
+    return Colors.red;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -66,7 +80,8 @@ class _TodoTileState extends State<TodoTile> {
                 leading: Checkbox(
                   value: widget.taskCompleted,
                   onChanged: widget.onChanged,
-                  activeColor: secondaryBackgroundColor,
+                  activeColor: Colors.white,
+                  fillColor: MaterialStateProperty.resolveWith(getColor),
                 ),
                 //Task tittle
                 title: Text(
@@ -77,7 +92,8 @@ class _TodoTileState extends State<TodoTile> {
                       color: toDoText,
                       decoration: widget.taskCompleted
                           ? TextDecoration.lineThrough
-                          : TextDecoration.none),
+                          : TextDecoration.none,
+                      decorationThickness: 5),
                 ),
                 //Details opener- if Description availiable
                 //TODO: check if description is available
@@ -90,12 +106,13 @@ class _TodoTileState extends State<TodoTile> {
               ),
             ),
 
-            
             // Description open
             (widget.description.isNotEmpty && descriptionOpener)
                 ? Container(
-                    height: ScrnSizer.screenHeight() * 0.2,
                     width: ScrnSizer.screenWidth() * 0.8,
+                    constraints: BoxConstraints(
+                      maxHeight: ScrnSizer.screenHeight() * 0.2,
+                    ),
                     color: Colors.white,
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),

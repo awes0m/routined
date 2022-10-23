@@ -25,6 +25,7 @@ class TodoDialogBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: toDoColor,
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
               topLeft: Radius.elliptical(20, 30),
@@ -32,12 +33,15 @@ class TodoDialogBox extends StatelessWidget {
       content: SizedBox(
         height: ScrnSizer.screenHeight() * 0.3,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisSize: MainAxisSize.min,
           children: [
             //Task name field
             SizedBox(
               height: ScrnSizer.screenHeight() * 0.2,
               child: SingleChildScrollView(
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     //TaskName field
                     TextField(
@@ -52,15 +56,17 @@ class TodoDialogBox extends StatelessWidget {
                           border: const OutlineInputBorder(),
                           hintText: "Add Task Name"),
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
+                    //Gap
+                    const SizedBox(height: 10),
                     TextField(
                       maxLines: 2,
                       textCapitalization: TextCapitalization.sentences,
                       controller: descriptionController,
-                      decoration: const InputDecoration(
-                          label: Text('Description (Optional)'),
+                      decoration: InputDecoration(
+                          label: Text(
+                            'Description (Optional)',
+                            style: AppTextStyle.hintTextStyle(color: toDoText),
+                          ),
                           border: OutlineInputBorder(),
                           hintText: " Add Task Description"),
                     ),
@@ -93,9 +99,9 @@ class TodoDialogBox extends StatelessWidget {
             //   },
             // ),
 
-            SizedBox(
-              height: ScrnSizer.screenHeight() * 0.01,
-            ),
+            // SizedBox(
+            //   height: ScrnSizer.screenHeight() * 0.01,
+            // ),
 
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -103,8 +109,18 @@ class TodoDialogBox extends StatelessWidget {
 
                 /// Action Buttons
                 children: [
-                  CustomButton(text: "Save", onPressed: onSave),
-                  CustomButton(text: "Cancel", onPressed: onCancel),
+                  CustomButton(
+                    text: "Save",
+                    onPressed: onSave,
+                    color: toDoAlternate,
+                    textColor: toDoColor,
+                  ),
+                  CustomButton(
+                    text: "Cancel",
+                    onPressed: onCancel,
+                    color: toDoAlternate,
+                    textColor: toDoColor,
+                  ),
                 ]),
           ],
         ),

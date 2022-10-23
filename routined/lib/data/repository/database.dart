@@ -11,11 +11,11 @@ class TodoDatabase {
 // Run this if this is the first time user opens app
   void createInitialData() {
     toDoList = [
-      Task(title: 'buy baby'),
-      Task(title: 'buy baby food'),
-      Task(title: 'buy baby diapers'),
-      Task(title: 'buy baby clothes'),
-      Task(title: 'die'),
+      Task(
+          title: 'Call emma',
+          description: 'Lorem ipsum dolor sit amet, consectetur'),
+      Task(title: 'Workout'),
+      Task(title: 'Die', description: "Why Not"),
     ];
   }
 

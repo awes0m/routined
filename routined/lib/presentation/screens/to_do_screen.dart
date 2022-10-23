@@ -77,6 +77,8 @@ class _ToDoScreenState extends State<ToDoScreen> {
       Navigator.of(context).pop();
     });
     db.updateData();
+    controller.clear();
+    descriptionController.clear();
   }
 
   @override
