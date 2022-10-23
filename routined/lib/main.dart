@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import 'bottom_bar.dart';
+import 'presentation/bottom_bar.dart';
 import 'data/models/tasks.dart';
 
 Future<void> main() async {

@@ -19,6 +19,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
 //text controller
   TextEditingController controller = TextEditingController();
   TextEditingController dateInput = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
 //reference the hive box
   final _myBox = Hive.box('myBox');
   TodoDatabase db = TodoDatabase();
@@ -52,6 +53,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
               dateInput: dateInput,
               onSave: saveNewTask,
               onCancel: () => Navigator.of(context).pop(),
+              descriptionController: descriptionController,
             ));
   }
 
@@ -66,7 +68,11 @@ class _ToDoScreenState extends State<ToDoScreen> {
   // Save a task
   void saveNewTask() {
     setState(() {
-      db.toDoList.add(Task(title: controller.text));
+      db.toDoList.add(Task(
+          title: controller.text,
+          description: (descriptionController.text.trim().isNotEmpty)
+              ? descriptionController.text
+              : ''));
 
       Navigator.of(context).pop();
     });
@@ -78,14 +84,16 @@ class _ToDoScreenState extends State<ToDoScreen> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         elevation: 20,
-        backgroundColor: backgroundColor,
-        foregroundColor: Colors.white,
+        backgroundColor: toDoColor,
+        foregroundColor: toDoText,
         onPressed: createNewTask,
         child: const Icon(Icons.add),
       ),
       appBar: customAppBar(
-          titleText: 'Tasks and To-Dos', appBarColor: secondaryBackgroundColor),
-      backgroundColor: secondaryBackgroundColor,
+          titleText: 'Tasks and To-Dos',
+          appBarColor: toDoColor,
+          titleTextColor: toDoText),
+      backgroundColor: toDoColor,
       body: ListView(
         children: List.generate(
             db.toDoList.length,
@@ -94,6 +102,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
                   taskCompleted: db.toDoList[index].isDone,
                   onChanged: (value) => checkBoxChanged(value, index),
                   deletefunction: (context) => deleteTask(index),
+                  description: db.toDoList[index].description,
                 )),
       ),
     );

@@ -1,9 +1,15 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+
+import 'package:routined/core/common/colors.dart';
+import 'package:routined/core/common/text_styles.dart';
+import 'package:routined/core/common/utils.dart';
 import 'package:routined/core/widgets/custom_button.dart';
 
 class TodoDialogBox extends StatelessWidget {
   final TextEditingController textController;
   final TextEditingController dateInput;
+  final TextEditingController descriptionController;
   final VoidCallback onSave;
   final VoidCallback onCancel;
 
@@ -11,6 +17,7 @@ class TodoDialogBox extends StatelessWidget {
     Key? key,
     required this.textController,
     required this.dateInput,
+    required this.descriptionController,
     required this.onSave,
     required this.onCancel,
   }) : super(key: key);
@@ -18,23 +25,53 @@ class TodoDialogBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.elliptical(20, 30),
+              bottomRight: Radius.circular(20))),
       content: SizedBox(
-        height: 230,
+        height: ScrnSizer.screenHeight() * 0.3,
         child: Column(
           children: [
             //Task name field
-            TextField(
-              maxLines: 2,
-              textCapitalization: TextCapitalization.sentences,
-              controller: textController,
-              decoration: const InputDecoration(
-                  label: Text('Task'),
-                  border: OutlineInputBorder(),
-                  hintText: "Add Task Description"),
+            SizedBox(
+              height: ScrnSizer.screenHeight() * 0.2,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    //TaskName field
+                    TextField(
+                      maxLines: 1,
+                      textCapitalization: TextCapitalization.sentences,
+                      controller: textController,
+                      decoration: InputDecoration(
+                          label: Text(
+                            'Task',
+                            style: AppTextStyle.hintTextStyle(color: toDoText),
+                          ),
+                          border: const OutlineInputBorder(),
+                          hintText: "Add Task Name"),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    TextField(
+                      maxLines: 2,
+                      textCapitalization: TextCapitalization.sentences,
+                      controller: descriptionController,
+                      decoration: const InputDecoration(
+                          label: Text('Description (Optional)'),
+                          border: OutlineInputBorder(),
+                          hintText: " Add Task Description"),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
+
+            // const SizedBox(
+            //   height: 20,
+            // ),
             // //Datepicker
             // TextField(
             //   controller: dateInput,
@@ -55,8 +92,9 @@ class TodoDialogBox extends StatelessWidget {
             //         lastDate: DateTime(2100)))!;
             //   },
             // ),
-            const SizedBox(
-              height: 20,
+
+            SizedBox(
+              height: ScrnSizer.screenHeight() * 0.01,
             ),
 
             Row(
