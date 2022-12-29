@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:routined/core/common/globals.dart';
 import '../../core/widgets/custom_appbar.dart';
 import '../widgets/habbit_tile.dart';
 
@@ -61,7 +62,7 @@ class _HabbitTrackerPageState extends State<HabbitTrackerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:
-          customAppBar(titleText: 'Habbit tracker', appBarColor: Colors.grey),
+          customAppBar(titleText: 'Habbit tracker', appBarColor: Colors.grey, key: Globals.drawerKey),
       body: ListView.builder(
         itemCount: habbitList.length,
         itemBuilder: (ctx, index) => HabbitTile(

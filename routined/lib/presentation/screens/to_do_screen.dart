@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:routined/data/repository/database.dart';
 
 import '../../core/common/colors.dart';
+import '../../core/common/globals.dart';
 import '../../core/widgets/custom_appbar.dart';
 import '../../data/models/tasks.dart';
 import '../widgets/todo_dialogbox.dart';
@@ -86,16 +87,17 @@ class _ToDoScreenState extends State<ToDoScreen> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         elevation: 20,
-        backgroundColor: toDoColor,
-        foregroundColor: toDoText,
+        backgroundColor: kCaptionColor,
+        foregroundColor: kPrimaryColor,
         onPressed: createNewTask,
         child: const Icon(Icons.add),
       ),
       appBar: customAppBar(
           titleText: 'Tasks and To-Dos',
-          appBarColor: toDoColor,
-          titleTextColor: toDoText),
-      backgroundColor: toDoColor,
+          key: Globals.drawerKey,
+          appBarColor: kBackGroundColor,
+          titleTextColor: kPrimaryColor),
+      backgroundColor: kBackGroundColor,
       body: ListView(
         children: List.generate(
             db.toDoList.length,

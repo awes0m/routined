@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:routined/core/common/colors.dart';
 
 PreferredSizeWidget customAppBar({
+  required GlobalKey<ScaffoldState> key,
   required String titleText,
-  Color appBarColor = Colors.black,
-  Color titleTextColor = Colors.white,
+  Color appBarColor = kBackGroundColor,
+  Color titleTextColor = kCaptionColor,
 }) =>
     AppBar(
+      leading: IconButton(
+        icon: const Icon(
+          Icons.menu,
+          color: kPrimaryColor,
+        ),
+        onPressed: () {
+          key.currentState!.openDrawer();
+        },
+      ),
       centerTitle: true,
       title: Padding(
         padding: const EdgeInsets.all(15.0),

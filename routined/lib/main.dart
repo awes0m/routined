@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:routined/presentation/widgets/add_alarm.dart';
 
 import 'presentation/bottom_bar.dart';
 import 'data/models/tasks.dart';
@@ -22,11 +23,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Routined',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: const BottomBar());
+      debugShowCheckedModeBanner: false,
+      title: 'Routined',
+      theme: ThemeData(
+        primarySwatch: Colors.orange,
+      ),
+      home: const SideBarMenu(),
+      routes: {
+        AddAlarm.routeName: (context) => const AddAlarm(),
+      },
+    );
   }
 }

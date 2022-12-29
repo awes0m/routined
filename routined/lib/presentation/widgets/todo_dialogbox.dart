@@ -2,9 +2,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:routined/core/common/colors.dart';
-import 'package:routined/core/common/text_styles.dart';
+
 import 'package:routined/core/common/utils.dart';
 import 'package:routined/core/widgets/custom_button.dart';
+
+import '../../core/common/app_test_style.dart';
 
 class TodoDialogBox extends StatelessWidget {
   final TextEditingController textController;
@@ -25,7 +27,7 @@ class TodoDialogBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: toDoColor,
+      backgroundColor: kCaptionColor,
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
               topLeft: Radius.elliptical(20, 30),
@@ -49,10 +51,7 @@ class TodoDialogBox extends StatelessWidget {
                       textCapitalization: TextCapitalization.sentences,
                       controller: textController,
                       decoration: InputDecoration(
-                          label: Text(
-                            'Task',
-                            style: AppTextStyle.hintTextStyle(color: toDoText),
-                          ),
+                          label: AppTextStyle.hintText('Task', kPrimaryColor),
                           border: const OutlineInputBorder(),
                           hintText: "Add Task Name"),
                     ),
@@ -62,10 +61,10 @@ class TodoDialogBox extends StatelessWidget {
                       maxLines: 2,
                       textCapitalization: TextCapitalization.sentences,
                       controller: descriptionController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           label: Text(
                             'Description (Optional)',
-                            style: AppTextStyle.hintTextStyle(color: toDoText),
+                            style: TextStyle(color: kPrimaryColor),
                           ),
                           border: OutlineInputBorder(),
                           hintText: " Add Task Description"),
@@ -112,14 +111,14 @@ class TodoDialogBox extends StatelessWidget {
                   CustomButton(
                     text: "Save",
                     onPressed: onSave,
-                    color: toDoAlternate,
-                    textColor: toDoColor,
+                    color: kCaptionColor,
+                    textColor: kPrimaryColor,
                   ),
                   CustomButton(
                     text: "Cancel",
                     onPressed: onCancel,
-                    color: toDoAlternate,
-                    textColor: toDoColor,
+                    color: kCaptionColor,
+                    textColor: kPrimaryColor,
                   ),
                 ]),
           ],

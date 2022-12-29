@@ -70,8 +70,8 @@ class _TodoTileState extends State<TodoTile> {
           children: [
             //Main TodoTile
             Card(
-              color: toDoColor,
-              shadowColor: toDoAlternate,
+              color: kBackGroundColor,
+              shadowColor: kSecondaryBackgroundColor,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
               elevation: 10,
@@ -89,14 +89,13 @@ class _TodoTileState extends State<TodoTile> {
                   style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: toDoText,
+                      color: kCaptionColor,
                       decoration: widget.taskCompleted
                           ? TextDecoration.lineThrough
                           : TextDecoration.none,
                       decorationThickness: 5),
                 ),
                 //Details opener- if Description availiable
-                //TODO: check if description is available
                 trailing: widget.description.isNotEmpty
                     ? IconButton(
                         icon: const Icon(Icons.arrow_drop_down_circle),
