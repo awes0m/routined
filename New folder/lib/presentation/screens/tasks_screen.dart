@@ -6,24 +6,24 @@ import '../../core/common/colors.dart';
 import '../../core/common/globals.dart';
 import '../../core/widgets/custom_appbar.dart';
 import '../../data/models/tasks.dart';
-import '../widgets/todo_dialogbox.dart';
-import '../widgets/todo_tile.dart';
+import '../widgets/tasks_dialogbox.dart';
+import '../widgets/tasks_tile.dart';
 
-class ToDoScreen extends StatefulWidget {
-  const ToDoScreen({Key? key}) : super(key: key);
+class TasksScreen extends StatefulWidget {
+  const TasksScreen({super.key});
 
   @override
-  State<ToDoScreen> createState() => _ToDoScreenState();
+  State<TasksScreen> createState() => _TasksScreenState();
 }
 
-class _ToDoScreenState extends State<ToDoScreen> {
+class _TasksScreenState extends State<TasksScreen> {
 //text controller
   TextEditingController controller = TextEditingController();
   TextEditingController dateInput = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 //reference the hive box
-  final _myBox = Hive.box('myBox');
-  TodoDatabase db = TodoDatabase();
+  final _myBox = Hive.box('taskBox');
+  TaskDatabase db = TaskDatabase();
   @override
   void initState() {
     // if this the first time opening the app
@@ -40,7 +40,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
 // Checkbox Tapped
   void checkBoxChanged(bool? value, int index) {
     setState(() {
-      db.toDoList[index].isDone = !db.toDoList[index].isDone;
+      db.taskList[index].isDone = !db.taskList[index].isDone;
     });
     db.updateData();
   }
@@ -49,7 +49,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
   void createNewTask() {
     showDialog(
         context: context,
-        builder: (context) => TodoDialogBox(
+        builder: (context) => TasksDialogBox(
               textController: controller,
               dateInput: dateInput,
               onSave: saveNewTask,
@@ -61,7 +61,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
   //Delete Task
   void deleteTask(int index) {
     setState(() {
-      db.toDoList.removeAt(index);
+      db.taskList.removeAt(index);
     });
     db.updateData();
   }
@@ -69,7 +69,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
   // Save a task
   void saveNewTask() {
     setState(() {
-      db.toDoList.add(Task(
+      db.taskList.add(Task(
           title: controller.text,
           description: (descriptionController.text.trim().isNotEmpty)
               ? descriptionController.text
@@ -100,13 +100,13 @@ class _ToDoScreenState extends State<ToDoScreen> {
       backgroundColor: kBackGroundColor,
       body: ListView(
         children: List.generate(
-            db.toDoList.length,
-            (index) => TodoTile(
-                  title: db.toDoList[index].title,
-                  taskCompleted: db.toDoList[index].isDone,
+            db.taskList.length,
+            (index) => TasksTile(
+                  title: db.taskList[index].title,
+                  taskCompleted: db.taskList[index].isDone,
                   onChanged: (value) => checkBoxChanged(value, index),
                   deletefunction: (context) => deleteTask(index),
-                  description: db.toDoList[index].description,
+                  description: db.taskList[index].description,
                 )),
       ),
     );

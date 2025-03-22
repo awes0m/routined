@@ -5,26 +5,26 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:routined/core/common/colors.dart';
 import 'package:routined/core/common/utils.dart';
 
-class TodoTile extends StatefulWidget {
+class TasksTile extends StatefulWidget {
   final String title;
   final bool taskCompleted;
   final Function(bool?)? onChanged;
   final Function(BuildContext)? deletefunction;
   final String description;
-  const TodoTile({
-    Key? key,
+  const TasksTile({
+    super.key,
     required this.title,
     required this.taskCompleted,
     required this.onChanged,
     required this.deletefunction,
     required this.description,
-  }) : super(key: key);
+  });
 
   @override
-  State<TodoTile> createState() => _TodoTileState();
+  State<TasksTile> createState() => _TasksTileState();
 }
 
-class _TodoTileState extends State<TodoTile> {
+class _TasksTileState extends State<TasksTile> {
   bool descriptionOpener = false;
 
   ///False by default
@@ -36,12 +36,12 @@ class _TodoTileState extends State<TodoTile> {
   }
 
   /// Gets the color of the CheckBox based on the current state of Task completion or mouse loaction
-  Color getColor(Set<MaterialState> states) {
-    const Set<MaterialState> interactiveStates = <MaterialState>{
-      MaterialState.pressed,
-      MaterialState.hovered,
-      MaterialState.focused,
-      MaterialState.selected
+  Color getColor(Set<WidgetState> states) {
+    const Set<WidgetState> interactiveStates = <WidgetState>{
+      WidgetState.pressed,
+      WidgetState.hovered,
+      WidgetState.focused,
+      WidgetState.selected
     };
     if (states.any(interactiveStates.contains)) {
       return Colors.green;
@@ -81,7 +81,7 @@ class _TodoTileState extends State<TodoTile> {
                   value: widget.taskCompleted,
                   onChanged: widget.onChanged,
                   activeColor: Colors.white,
-                  fillColor: MaterialStateProperty.resolveWith(getColor),
+                  fillColor: WidgetStateProperty.resolveWith(getColor),
                 ),
                 //Task tittle
                 title: Text(

@@ -8,30 +8,31 @@ import 'package:routined/core/widgets/custom_button.dart';
 
 import '../../core/common/app_test_style.dart';
 
-class TodoDialogBox extends StatelessWidget {
+class TasksDialogBox extends StatelessWidget {
   final TextEditingController textController;
   final TextEditingController dateInput;
   final TextEditingController descriptionController;
   final VoidCallback onSave;
   final VoidCallback onCancel;
 
-  const TodoDialogBox({
-    Key? key,
+  const TasksDialogBox({
+    super.key,
     required this.textController,
     required this.dateInput,
     required this.descriptionController,
     required this.onSave,
     required this.onCancel,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: kCaptionColor,
+      backgroundColor: kBackGroundColor,
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
               topLeft: Radius.elliptical(20, 30),
-              bottomRight: Radius.circular(20))),
+              bottomRight: Radius.circular(20),
+              topRight: Radius.elliptical(20, 30))),
       content: SizedBox(
         height: ScrnSizer.screenHeight() * 0.3,
         child: Column(
@@ -40,11 +41,12 @@ class TodoDialogBox extends StatelessWidget {
           children: [
             //Task name field
             SizedBox(
-              height: ScrnSizer.screenHeight() * 0.2,
+              height: ScrnSizer.screenHeight() * 0.25,
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    const SizedBox(height: 10),
                     //TaskName field
                     TextField(
                       maxLines: 1,
@@ -56,7 +58,7 @@ class TodoDialogBox extends StatelessWidget {
                           hintText: "Add Task Name"),
                     ),
                     //Gap
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 20),
                     TextField(
                       maxLines: 2,
                       textCapitalization: TextCapitalization.sentences,
@@ -111,14 +113,14 @@ class TodoDialogBox extends StatelessWidget {
                   CustomButton(
                     text: "Save",
                     onPressed: onSave,
-                    color: kCaptionColor,
-                    textColor: kPrimaryColor,
+                    color: kBackGroundColor,
+                    textColor: kCaptionColor,
                   ),
                   CustomButton(
                     text: "Cancel",
                     onPressed: onCancel,
-                    color: kCaptionColor,
-                    textColor: kPrimaryColor,
+                    color: kBackGroundColor,
+                    textColor: kCaptionColor,
                   ),
                 ]),
           ],
