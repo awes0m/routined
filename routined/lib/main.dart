@@ -1,44 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:routined/core/constants/db_constants.dart';
-import 'package:routined/presentation/widgets/add_alarm.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:routined/features/widgets/add_alarm.dart';
+import 'package:routined/data/repository/database_connection.dart';
 
-import 'presentation/bottom_bar.dart';
-import 'data/models/tasks.dart';
+import 'features/bottom_bar.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // init hive
-  await Hive.initFlutter();
 
-  //register adapter
-  Hive.registerAdapter(TaskAdapter());
-  // Hive.registerAdapter(HabbitAdapter());
-  // open a Box
+  // Initialize SQLite for Android
+  await initializeSqlite();
 
-  await Hive.openBox(habbitBox);
-  await Hive.openBox(taskBox);
-  await Hive.openBox(noteBox);
-
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Routined',
-      theme: ThemeData(
-        primarySwatch: Colors.orange,
-      ),
+      theme: ThemeData(primarySwatch: Colors.orange),
       home: const SideBarMenu(),
-      routes: {
-        AddAlarm.routeName: (context) => const AddAlarm(),
-      },
+      routes: {AddAlarm.routeName: (context) => const AddAlarm()},
     );
   }
 }

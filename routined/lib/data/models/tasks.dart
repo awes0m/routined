@@ -1,55 +1,11 @@
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/adapters.dart';
-part 'tasks.g.dart';
+import 'package:drift/drift.dart';
+import 'package:routined/data/repository/app_database.dart';
 
-@HiveType(typeId: 2)
-class Task {
-  int? id;
-
-  @HiveField(0)
-  String title;
-
-  @HiveField(1)
-  bool isDone;
-
-  @HiveField(2)
-  String description;
-  Task({
-    this.id,
-    required this.title,
-    this.description = '',
-    this.isDone = false,
-  });
-
-  Map<String, dynamic> toJson() {
-    return {
-      'title': title,
-      'description': description,
-      'isDone': isDone,
-    };
-  }
-
-  factory Task.fromJson(int id, Map<String, dynamic> json) {
-    return Task(
-      id: id,
-      title: json['title'] as String,
-      description: json['description'] as String,
-      isDone: json['isDone'] as bool,
-    );
-  }
-
-  Task copyWith({
-    int? id,
-    String? title,
-    String? description,
-    bool? isDone,
-    DateTime? date,
-  }) {
-    return Task(
-      id: id ?? this.id,
-      title: title ?? this.title,
-      description: description ?? this.description,
-      isDone: isDone ?? this.isDone,
-    );
-  }
+@UseRowClass(Task)
+class Tasks extends Table {
+  IntColumn get id => integer().withDefault(Constant(0)).autoIncrement()();
+  BoolColumn get isDone => boolean().withDefault(Constant(false))();
+  TextColumn get title => text().withLength(min: 6, max: 32)();
+  TextColumn get description => text().nullable().named('description')();
+  DateTimeColumn get createdAt => dateTime().nullable()();
 }

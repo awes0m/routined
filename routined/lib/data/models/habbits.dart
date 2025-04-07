@@ -1,69 +1,18 @@
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/adapters.dart';
-import 'package:routined/core/constants/db_constants.dart';
-part 'habbits.g.dart';
+import 'package:drift/drift.dart';
 
-@HiveType(typeId: 1)
-class Habbit extends HiveObject {
-  int? id;
+import '../repository/app_database.dart';
 
-  @HiveField(0)
-  String habbitName;
 
-  @HiveField(1)
-  int timeSpent;
+@UseRowClass(Habbit)
+class Habbits extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get habbitName => text().withLength(min: 6, max: 32)();
+  IntColumn get timeSpent => integer().withDefault(Constant(0))();
+  IntColumn get timeGoal => integer().withDefault(Constant(0))();
+  BoolColumn get habbitStarted => boolean().withDefault(Constant(false))();
+  DateTimeColumn get createdAt => dateTime().nullable()();
 
-  @HiveField(2)
-  int timeGoal;
-
-  @HiveField(3, defaultValue: false)
-  bool habbitStarted;
-
-  @HiveField(4, defaultValue: '')
-  DateTime date;
-
-  Habbit({
-    this.id,
-    this.habbitName = '',
-    this.timeSpent = 0,
-    this.timeGoal = 0,
-    this.habbitStarted = false,
-    required this.date,
-  });
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'habbitName': habbitName,
-      'timeSpent': timeSpent,
-      'habbitStarted': habbitStarted,
-      'date': dateToString(date),
-    };
-  }
-
-  factory Habbit.fromJson(int id, Map<String, dynamic> json) {
-    return Habbit(
-      id: json['id'] as int,
-      habbitName: json['habbitName'] as String,
-      timeSpent: json['timeSpent'] as int,
-      habbitStarted: json['habbitStarted'] as bool,
-      date: DateTime.now(),
-    );
-  }
-
-  Habbit copyWith({
-    int? id,
-    String? habbitName,
-    int? timeSpent,
-    bool? habbitStarted,
-    String? date,
-  }) {
-    return Habbit(
-      id: id ?? this.id,
-      habbitName: habbitName ?? this.habbitName,
-      timeSpent: timeSpent ?? this.timeSpent,
-      habbitStarted: habbitStarted ?? this.habbitStarted,
-      date: stringToDateTime(date) ?? this.date,
-    );
-  }
 }
+
+
+// https://r1n1os.medium.com/drift-local-database-for-flutter-part-1-intro-setup-and-migration-09a64d44f6df#:~:text=For%20this%2C%20create%20a%20dart,tables%20when%20you%20use%20the%20.

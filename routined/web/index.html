@@ -31,8 +31,17 @@
 
   <title>routined</title>
   <link rel="manifest" href="manifest.json">
+  
+  <!-- Drift SQLite WASM support -->
+  <script>
+    // This is required to make drift work with WASM in the browser
+    var dartMainRunner = function(main) {
+      main();
+    };
+  </script>
 </head>
 <body>
+  <!-- Copy the WASM files to the root of the web directory during build -->
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>

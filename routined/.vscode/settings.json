@@ -1,6 +1,7 @@
 {
     "flutterTools.displayGetxContextMenu": false,
     "flutterTools.displayMobxContextMenu": false,
-    "flutterTools.displayRiverpodContextMenu": false,
-    "flutterTools.displayModularContextMenu": false
+    "flutterTools.displayRiverpodContextMenu": true,
+    "flutterTools.displayModularContextMenu": false,
+    "zencoder.enableRepoIndexing": true
 }
