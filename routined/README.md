@@ -1,8 +1,8 @@
-# Routined
+# [Routined](https://github.com/awes0m/routined)
 
 A Flutter-based multi-utility productivity app featuring Habit Tracking, Tasks (To‑Do), Reminders, Notepad, and Expense Tracking. State management is powered by Riverpod and data is persisted locally via Drift (SQLite).
 
-## Download- [[here](/release/)]
+## Download- [[here](https://github.com/awes0m/routined/blob/main/routined/release/routined.apk)]
 
 ## Features
 
