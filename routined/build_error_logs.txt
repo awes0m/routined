@@ -1,7 +1,0 @@
-Launching lib\main.dart on Chrome in debug mode...
-lib/data/repository/database_connection.dart:85:14: Error: Method not found: 'NativeDatabase'.
-      return NativeDatabase(file);
-             ^^^^^^^^^^^^^^
-Failed to compile application.
-
-Exited (1).

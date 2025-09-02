@@ -1,8 +1,43 @@
 import 'package:drift/drift.dart';
 
-import '../repository/app_database.dart';
+class Habbit {
+  final int id;
+  final String habbitName;
+  final int timeSpent;
+  final int timeGoal;
+  final bool habbitStarted;
+  final DateTime? createdAt;
+
+  Habbit({
+    required this.id,
+    required this.habbitName,
+    required this.timeSpent,
+    required this.timeGoal,
+    required this.habbitStarted,
+    this.createdAt,
+  });
 
 
+//copy with
+Habbit copyWith({
+  int? id,
+  String? habbitName,
+  int? timeSpent,
+  int? timeGoal,
+  bool? habbitStarted,
+  DateTime? createdAt,
+}) {
+  return Habbit(
+    id: id ?? this.id,
+    habbitName: habbitName ?? this.habbitName,
+    timeSpent: timeSpent ?? this.timeSpent,
+    timeGoal: timeGoal ?? this.timeGoal,
+    habbitStarted: habbitStarted ?? this.habbitStarted,
+    createdAt: createdAt ?? this.createdAt,
+  );
+}
+
+}
 @UseRowClass(Habbit)
 class Habbits extends Table {
   IntColumn get id => integer().autoIncrement()();

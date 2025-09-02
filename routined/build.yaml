@@ -3,6 +3,6 @@ targets:
     builders:
       drift_dev:
         options:
-          # Android-only configuration
           sqlite:
-            android: true
+            modules:
+              - fts5

@@ -27,82 +27,86 @@ class TasksDialogBox extends StatelessWidget {
     return AlertDialog(
       backgroundColor: kBackGroundColor,
       shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.elliptical(20, 30),
-              bottomRight: Radius.circular(20),
-              topRight: Radius.elliptical(20, 30))),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.elliptical(20, 30),
+          bottomRight: Radius.circular(20),
+          topRight: Radius.elliptical(20, 30),
+        ),
+      ),
       content: SizedBox(
         height: ScrnSizer.screenHeight() * 0.3,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            //Task name field
-            SizedBox(
-              height: ScrnSizer.screenHeight() * 0.25,
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const SizedBox(height: 10),
-                    //TaskName field
-                    TextField(
-                      maxLines: 1,
-                      textCapitalization: TextCapitalization.sentences,
-                      controller: textController,
-                      decoration: InputDecoration(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              //Task name field
+              SizedBox(
+                height: ScrnSizer.screenHeight() * 0.25,
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SizedBox(height: 10),
+                      //TaskName field
+                      TextField(
+                        maxLines: 1,
+                        textCapitalization: TextCapitalization.sentences,
+                        controller: textController,
+                        decoration: InputDecoration(
                           label: AppTextStyle.hintText('Task', kPrimaryColor),
                           border: const OutlineInputBorder(),
-                          hintText: "Add Task Name"),
-                    ),
-                    //Gap
-                    const SizedBox(height: 20),
-                    TextField(
-                      maxLines: 2,
-                      textCapitalization: TextCapitalization.sentences,
-                      controller: descriptionController,
-                      decoration: const InputDecoration(
+                          hintText: "Add Task Name",
+                        ),
+                      ),
+                      //Gap
+                      const SizedBox(height: 20),
+                      TextField(
+                        maxLines: 2,
+                        textCapitalization: TextCapitalization.sentences,
+                        controller: descriptionController,
+                        decoration: const InputDecoration(
                           label: Text(
                             'Description (Optional)',
                             style: TextStyle(color: kPrimaryColor),
                           ),
                           border: OutlineInputBorder(),
-                          hintText: " Add Task Description"),
-                    ),
-                  ],
+                          hintText: " Add Task Description",
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
 
-            // const SizedBox(
-            //   height: 20,
-            // ),
-            // //Datepicker
-            // TextField(
-            //   controller: dateInput,
-            //   //editing controller of this TextField
-            //   decoration: const InputDecoration(
-            //       border: OutlineInputBorder(),
-            //       icon: Icon(Icons.calendar_today), //icon of text field
-            //       labelText: "Due Date" //label text of field
-            //       ),
-            //   readOnly: true,
-            //   //set it true, so that user will not able to edit text
-            //   onTap: () async {
-            //     pickedDate = (await showDatePicker(
-            //         context: context,
-            //         initialDate: DateTime.now(),
-            //         firstDate: DateTime(1950),
-            //         //DateTime.now() - not to allow to choose before today.
-            //         lastDate: DateTime(2100)))!;
-            //   },
-            // ),
+              // const SizedBox(
+              //   height: 20,
+              // ),
+              // //Datepicker
+              // TextField(
+              //   controller: dateInput,
+              //   //editing controller of this TextField
+              //   decoration: const InputDecoration(
+              //       border: OutlineInputBorder(),
+              //       icon: Icon(Icons.calendar_today), //icon of text field
+              //       labelText: "Due Date" //label text of field
+              //       ),
+              //   readOnly: true,
+              //   //set it true, so that user will not able to edit text
+              //   onTap: () async {
+              //     pickedDate = (await showDatePicker(
+              //         context: context,
+              //         initialDate: DateTime.now(),
+              //         firstDate: DateTime(1950),
+              //         //DateTime.now() - not to allow to choose before today.
+              //         lastDate: DateTime(2100)))!;
+              //   },
+              // ),
 
-            // SizedBox(
-            //   height: ScrnSizer.screenHeight() * 0.01,
-            // ),
-
-            Row(
+              // SizedBox(
+              //   height: ScrnSizer.screenHeight() * 0.01,
+              // ),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.end,
 
@@ -120,8 +124,10 @@ class TasksDialogBox extends StatelessWidget {
                     color: kBackGroundColor,
                     textColor: kCaptionColor,
                   ),
-                ]),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

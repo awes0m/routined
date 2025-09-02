@@ -6,25 +6,22 @@ PreferredSizeWidget customAppBar({
   required String titleText,
   Color appBarColor = kBackGroundColor,
   Color titleTextColor = kCaptionColor,
-}) =>
-    AppBar(
-      leading: IconButton(
-        icon: const Icon(
-          Icons.menu,
-          color: kPrimaryColor,
-        ),
-        onPressed: () {
-          key.currentState!.openDrawer();
-        },
-      ),
-      centerTitle: true,
-      title: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Text(titleText,
-            style: TextStyle(
-              color: titleTextColor,
-              fontSize: 24,
-            )),
-      ),
-      backgroundColor: appBarColor,
-    );
+  List<Widget> actions = const [],
+}) => AppBar(
+  leading: IconButton(
+    icon: const Icon(Icons.menu, color: kPrimaryColor),
+    onPressed: () {
+      key.currentState!.openDrawer();
+    },
+  ),
+  centerTitle: true,
+  title: Padding(
+    padding: const EdgeInsets.all(15.0),
+    child: Text(
+      titleText,
+      style: TextStyle(color: titleTextColor, fontSize: 24),
+    ),
+  ),
+  backgroundColor: appBarColor,
+  actions: actions,
+);

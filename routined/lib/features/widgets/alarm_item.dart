@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:routined/core/colors.dart';
 
-Widget alarmItem(hour, enabled) {
+Widget alarmItem(String hour, bool enabled, {ValueChanged<bool>? onToggle}) {
   return Padding(
     padding: const EdgeInsets.all(7),
     child: Column(
@@ -13,11 +13,13 @@ Widget alarmItem(hour, enabled) {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(hour,
-                    style: const TextStyle(
-                      fontSize: 50,
-                      fontWeight: FontWeight.bold,
-                    )),
+                Text(
+                  hour,
+                  style: const TextStyle(
+                    fontSize: 50,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 Row(
                   children: [
                     weekdayShort('Sun'),
@@ -28,30 +30,30 @@ Widget alarmItem(hour, enabled) {
                     weekdayShort('Fri'),
                     weekdayShort('Sat'),
                   ],
-                )
+                ),
               ],
             ),
             Switch.adaptive(
               value: enabled,
               onChanged: (bool val) {
-                print(val);
+                onToggle?.call(val);
               },
               activeColor: const Color(0xff65d1ba),
-            )
+            ),
           ],
-        )
+        ),
       ],
     ),
   );
 }
 
 Widget weekdayShort(String text) => Padding(
-      padding: const EdgeInsets.all(4),
-      child: Text(
-        text,
-        style: const TextStyle(
-          color: kSecondaryBackgroundColor,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-    );
+  padding: const EdgeInsets.all(4),
+  child: Text(
+    text,
+    style: const TextStyle(
+      color: kSecondaryBackgroundColor,
+      fontWeight: FontWeight.w600,
+    ),
+  ),
+);

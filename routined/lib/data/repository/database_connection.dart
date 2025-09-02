@@ -4,7 +4,8 @@ import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:sqlite3_flutter_libs/sqlite3_flutter_libs.dart';
 import 'package:sqlite3/sqlite3.dart';
-import 'dart:io' show  File;
+import 'dart:io' show File;
+import 'package:flutter/foundation.dart';
 
 /// Initialize SQLite for Android
 Future<void> initializeSqlite() async {
@@ -15,7 +16,7 @@ Future<void> initializeSqlite() async {
     // Initialize SQLite for Android
     sqlite3.openInMemory().dispose();
   } catch (e) {
-    print('Error initializing SQLite: $e');
+    debugPrint('Error initializing SQLite: $e');
   }
 }
 

@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:routined/core/colors.dart';
 
@@ -36,78 +37,116 @@ class _HabbitDialogBoxState extends State<HabbitDialogBox> {
     return AlertDialog(
       backgroundColor: kBackGroundColor,
       shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.elliptical(20, 30),
-              bottomRight: Radius.circular(20),
-              topRight: Radius.elliptical(20, 30))),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.elliptical(20, 30),
+          bottomRight: Radius.circular(20),
+          topRight: Radius.elliptical(20, 30),
+        ),
+      ),
       content: SizedBox(
         height: ScrnSizer.screenHeight() * 0.3,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            //Task name field
-            SizedBox(
-              height: ScrnSizer.screenHeight() * 0.25,
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const SizedBox(height: 10),
-                    //TaskName field
-                    TextField(
-                      maxLines: 1,
-                      textCapitalization: TextCapitalization.sentences,
-                      controller: widget.habbitName,
-                      decoration: InputDecoration(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              //Task name field
+              SizedBox(
+                height: ScrnSizer.screenHeight() * 0.25,
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SizedBox(height: 10),
+                      //TaskName field
+                      TextField(
+                        maxLines: 1,
+                        textCapitalization: TextCapitalization.sentences,
+                        controller: widget.habbitName,
+                        decoration: InputDecoration(
                           label: AppTextStyle.hintText('Task', kPrimaryColor),
                           border: const OutlineInputBorder(),
-                          hintText: "Add Task Name"),
-                    ),
-                    //Gap
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        TextField(
-                          maxLines: 1,
-                          textCapitalization: TextCapitalization.characters,
-                          controller: widget.hourPicker,
-                          decoration: InputDecoration(
-                              label:
-                                  AppTextStyle.hintText('Hour', kPrimaryColor),
-                              border: const OutlineInputBorder(),
-                              hintText: "HH"),
+                          hintText: "Add Task Name",
                         ),
-                        TextField(
-                          maxLines: 1,
-                          textCapitalization: TextCapitalization.characters,
-                          controller: widget.hourPicker,
-                          decoration: InputDecoration(
-                              label: AppTextStyle.hintText(
-                                  'Minute', kPrimaryColor),
-                              border: const OutlineInputBorder(),
-                              hintText: "MM"),
-                        ),
-                        TextField(
-                          maxLines: 1,
-                          textCapitalization: TextCapitalization.characters,
-                          controller: widget.hourPicker,
-                          decoration: InputDecoration(
-                              label:
-                                  AppTextStyle.hintText('Sec', kPrimaryColor),
-                              border: const OutlineInputBorder(),
-                              hintText: "SS"),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                  ],
+                      ),
+                      //Gap
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          // Hours
+                          SizedBox(
+                            width: 70,
+                            child: TextField(
+                              maxLines: 1,
+                              keyboardType: TextInputType.number,
+                              controller: widget.hourPicker,
+                              inputFormatters: [
+                                // Allow only digits and limit to 2 chars
+                                FilteringTextInputFormatter.digitsOnly,
+                                LengthLimitingTextInputFormatter(2),
+                              ],
+                              decoration: InputDecoration(
+                                label: AppTextStyle.hintText(
+                                  'Hour',
+                                  kPrimaryColor,
+                                ),
+                                border: const OutlineInputBorder(),
+                                hintText: "HH",
+                              ),
+                            ),
+                          ),
+                          // Minutes
+                          SizedBox(
+                            width: 70,
+                            child: TextField(
+                              maxLines: 1,
+                              keyboardType: TextInputType.number,
+                              controller: widget.minutePicker,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                                LengthLimitingTextInputFormatter(2),
+                              ],
+                              decoration: InputDecoration(
+                                label: AppTextStyle.hintText(
+                                  'Minute',
+                                  kPrimaryColor,
+                                ),
+                                border: const OutlineInputBorder(),
+                                hintText: "MM",
+                              ),
+                            ),
+                          ),
+                          // Seconds
+                          SizedBox(
+                            width: 70,
+                            child: TextField(
+                              maxLines: 1,
+                              keyboardType: TextInputType.number,
+                              controller: widget.secondsPicker,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                                LengthLimitingTextInputFormatter(2),
+                              ],
+                              decoration: InputDecoration(
+                                label: AppTextStyle.hintText(
+                                  'Sec',
+                                  kPrimaryColor,
+                                ),
+                                border: const OutlineInputBorder(),
+                                hintText: "SS",
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
                 ),
               ),
-            ),
 
-            Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.end,
 
@@ -125,8 +164,10 @@ class _HabbitDialogBoxState extends State<HabbitDialogBox> {
                     color: kBackGroundColor,
                     textColor: kCaptionColor,
                   ),
-                ]),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

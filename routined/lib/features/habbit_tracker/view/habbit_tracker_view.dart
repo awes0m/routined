@@ -1,113 +1,60 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:routined/core/globals.dart';
 import 'package:routined/features/habbit_tracker/widgets/habbits_dialogbox.dart';
-import '../../../core/colors.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../core/core.dart';
 import '../../../constants/db_constants.dart';
 import '../../../common/custom_appbar.dart';
-import '../../../data/repository/app_database.dart';
 import '../widgets/habbit_tile.dart';
+import '../providers/habits_providers.dart';
 
-class HabbitTrackerView extends StatefulWidget {
+class HabbitTrackerView extends ConsumerStatefulWidget {
   const HabbitTrackerView({super.key});
 
   @override
-  State<HabbitTrackerView> createState() => _HabbitTrackerViewState();
+  ConsumerState<HabbitTrackerView> createState() => _HabbitTrackerViewState();
 }
 
-class _HabbitTrackerViewState extends State<HabbitTrackerView> {
+class _HabbitTrackerViewState extends ConsumerState<HabbitTrackerView> {
   //text controller
   TextEditingController habbitNameController = TextEditingController();
   TextEditingController hourInputController = TextEditingController();
   TextEditingController minuteInputController = TextEditingController();
   TextEditingController secondInputController = TextEditingController();
-  bool localTicker = false;
-  String timeGoal = "00:00:00";
-  AppDatabase db = AppDatabase.instance();
   @override
   void initState() {
     super.initState();
-    // Load data when the view is initialized
-    _loadHabbitData();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(habitsProvider.notifier).refresh();
+    });
   }
 
-  Future<void> _loadHabbitData() async {
-    // Check if there are any habits already
-    await db.loadData();
-    if (db.habbitList.isEmpty) {
-      // If no habits exist, create initial data
-      await db.createInitialData();
-    }
-    // Update the UI
-    setState(() {});
-  }
-
-  void habbitStarted(int index) {
-    localTicker = db.habbitList[index].habbitStarted;
-
-    /// Grab the start time
-    DateTime startTime = DateTime.now();
-
-    /// Keep track of the previous time
-    int elapsedTime = db.habbitList[index].timeSpent;
-    setState(() {
-      localTicker = !localTicker;
-      // Create a new Habbit object with updated habbitStarted value
-      db.habbitList[index] = db.habbitList[index].copyWith(
-        habbitStarted: localTicker,
-      );
-    });
-
-    ///keep the timer going
-    Timer.periodic(const Duration(seconds: 1), (timer) {
-      ///check if user has stoopped the timer
-      setState(() {
-        if (localTicker == false) {
-          timer.cancel();
-        } else {
-          var currentTime = DateTime.now();
-          int newTimeSpent =
-              elapsedTime +
-              currentTime.second -
-              startTime.second +
-              60 * (currentTime.minute - startTime.minute) +
-              60 * 60 * (currentTime.hour - startTime.hour) +
-              60 * 60 * 24 * (currentTime.day - startTime.day);
-
-          // Create a new Habbit object with updated timeSpent value
-          db.habbitList[index] = db.habbitList[index].copyWith(
-            timeSpent: newTimeSpent,
-          );
-        }
-      });
-    });
+  void habbitStarted(int habitIndex) {
+    final habits = ref.read(habitsProvider).value;
+    if (habits == null || habitIndex < 0 || habitIndex >= habits.length) return;
+    final id = habits[habitIndex].id;
+    ref.read(habitsProvider.notifier).toggleStart(id);
   }
 
   void settingsOpened(int index) {
+    final habits = ref.read(habitsProvider).value;
+    final name =
+        (habits != null && index >= 0 && index < habits.length)
+            ? habits[index].habbitName
+            : '';
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: Text('Settings for ${db.habbitList[index].habbitName}'),
-        );
+        return AlertDialog(title: Text('Settings for $name'));
       },
     );
   }
 
-  // Checkbox Tapped
-  void checkBoxChanged(bool? value, int index) {
-    setState(() {
-      // Create a new Habbit object with toggled habbitStarted value
-      db.habbitList[index] = db.habbitList[index].copyWith(
-        habbitStarted: !db.habbitList[index].habbitStarted,
-      );
-    });
-    db.updateData();
-  }
-
   // Create new Habbit- Floating action button tapped
   void createNewHabbit() {
+    _openCreateDialog();
+  }
+
+  void _openCreateDialog() {
     showDialog(
       context: context,
       builder:
@@ -122,17 +69,14 @@ class _HabbitTrackerViewState extends State<HabbitTrackerView> {
     );
   }
 
-  //Delete Habbit
   void deleteHabbit(int index) {
-    setState(() {
-      db.habbitList.removeAt(index);
-    });
-    db.updateData();
+    final habits = ref.read(habitsProvider).value;
+    if (habits == null || index < 0 || index >= habits.length) return;
+    final id = habits[index].id;
+    ref.read(habitsProvider.notifier).deleteHabit(id);
   }
 
-  // Save a Habbit
   void saveNewHabbit() {
-    // Get time goal from input controllers
     String hours =
         hourInputController.text.isEmpty
             ? "00"
@@ -147,24 +91,40 @@ class _HabbitTrackerViewState extends State<HabbitTrackerView> {
             : secondInputController.text.padLeft(2, '0');
     String formattedTimeGoal = "$hours:$minutes:$seconds";
 
-    setState(() {
-      // Create a new Habbit with default values for id and other required fields
-      db.habbitList.add(
-        Habbit(
-          id: 0, // This will be auto-assigned by the database
-          habbitName: habbitNameController.text,
-          timeGoal: timeToTimeInSecs(formattedTimeGoal),
-          timeSpent: 0,
-          habbitStarted: false,
-          createdAt: DateTime.now(),
-        ),
-      );
+    _saveNewHabit();
+  }
 
-      Navigator.of(context).pop();
-    });
-    db.updateData();
+  void _saveNewHabit() async {
+    String hours =
+        hourInputController.text.isEmpty
+            ? "00"
+            : hourInputController.text.padLeft(2, '0');
+    String minutes =
+        minuteInputController.text.isEmpty
+            ? "00"
+            : minuteInputController.text.padLeft(2, '0');
+    String seconds =
+        secondInputController.text.isEmpty
+            ? "00"
+            : secondInputController.text.padLeft(2, '0');
 
-    // Clear all input controllers
+    final formatted = "$hours:$minutes:$seconds";
+    final timeGoalSeconds = timeToTimeInSecs(formatted);
+
+    try {
+      await ref
+          .read(habitsProvider.notifier)
+          .addHabit(
+            name: habbitNameController.text,
+            timeGoalSeconds: timeGoalSeconds,
+          );
+      if (mounted) Navigator.of(context).pop();
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(e.toString())));
+    }
+
     habbitNameController.clear();
     hourInputController.clear();
     minuteInputController.clear();
@@ -173,30 +133,53 @@ class _HabbitTrackerViewState extends State<HabbitTrackerView> {
 
   @override
   Widget build(BuildContext context) {
-    var listView = ListView.builder(
-      itemCount: db.habbitList.length,
-      itemBuilder:
-          (ctx, index) => HabbitTile(
-            habbitName: db.habbitList[index].habbitName,
-            habbitStarted: db.habbitList[index].habbitStarted,
-            ontap: () => habbitStarted(index),
-            settingsOntap: () => settingsOpened(index),
-            timeGoal: db.habbitList[index].timeGoal,
-            timeSpent: db.habbitList[index].timeSpent,
-          ),
-    );
+    final habitsAsync = ref.watch(habitsProvider);
+
     return Scaffold(
       appBar: customAppBar(
         titleText: 'Habbit tracker',
         appBarColor: Colors.grey,
         key: Globals.drawerKey,
       ),
-      body: listView,
+      body: habitsAsync.when(
+        data: (habits) {
+          if (habits.isEmpty) {
+            return const Center(child: Text('No habits yet. Tap + to add.'));
+          }
+          return ListView.builder(
+            itemCount: habits.length,
+            itemBuilder: (ctx, index) {
+              final h = habits[index];
+              return Dismissible(
+                key: ValueKey('habit_${h.id}'),
+                direction: DismissDirection.endToStart,
+                background: Container(
+                  color: Colors.redAccent,
+                  alignment: Alignment.centerRight,
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: const Icon(Icons.delete, color: Colors.white),
+                ),
+                onDismissed: (_) => deleteHabbit(index),
+                child: HabbitTile(
+                  habbitName: h.habbitName,
+                  habbitStarted: h.habbitStarted,
+                  ontap: () => habbitStarted(index),
+                  settingsOntap: () => settingsOpened(index),
+                  timeGoal: h.timeGoal,
+                  timeSpent: h.timeSpent,
+                ),
+              );
+            },
+          );
+        },
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (e, _) => Center(child: Text('Error: $e')),
+      ),
       floatingActionButton: FloatingActionButton(
         elevation: 20,
         backgroundColor: kCaptionColor,
         foregroundColor: kPrimaryColor,
-        onPressed: createNewHabbit,
+        onPressed: _openCreateDialog,
         child: const Icon(Icons.add),
       ),
     );

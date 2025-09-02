@@ -1,6 +1,38 @@
 import 'package:drift/drift.dart';
-import 'package:routined/data/repository/app_database.dart';
 
+class Task {
+  final int id;
+  final bool isDone;
+  final String title;
+  final String? description;
+  final DateTime? createdAt;
+
+  Task({
+    required this.id,
+    required this.isDone,
+    required this.title,
+    this.description,
+    this.createdAt,
+  });
+
+
+//copy with
+Task copyWith({
+  int? id,
+  bool? isDone,
+  String? title,
+  String? description,
+  DateTime? createdAt,
+}) {
+  return Task(
+    id: id ?? this.id,
+    isDone: isDone ?? this.isDone,
+    title: title ?? this.title,
+    description: description ?? this.description,
+    createdAt: createdAt ?? this.createdAt,
+  );
+}
+}
 @UseRowClass(Task)
 class Tasks extends Table {
   IntColumn get id => integer().withDefault(Constant(0)).autoIncrement()();
